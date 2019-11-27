@@ -1,0 +1,149 @@
+<!--
+   Copyright (c) 2014, 2018, Oracle and/or its affiliates.
+   The Universal Permissive License (UPL), Version 1.0
+   -->
+<div class="oj-hybrid-padding">
+   <h1>Inspections</h1>
+   <div class="oj-flex">
+    <div class="oj-lg-6 oj-md-6 oj-sm-12 oj-flex-item">
+
+      <oj-label for="sortBy" class="oj-label-inline">Sort by:</oj-label>
+      <oj-select-one id="sortBy" value="{{currentSort}}" style="max-width:11em" on-value-changed="[[handleSortCriteriaChanged]]">
+          <oj-option value="lh">number: Low to High</oj-option>
+          <oj-option value="hl">number: High to Low</oj-option>
+      </oj-select-one>
+
+      <oj-label id="title_filter_lbl">Title:</oj-label>
+        <oj-select-one id="title_filter" labelled-by="price_filter_lbl"
+            value="{{currentTitle}}" style="padding-bottom: 15px" on-value-changed="[[handleFilterChanged]]">
+          <oj-option id="title_opt1" value="AML-Incident Investigation Form">AML - Incident Investigation Form</oj-option>
+          <oj-option id="title_opt2" value="new_template1234">new_template1234</oj-option>
+          <oj-option id="title_opt3" value="new_template">new_template</oj-option>
+          <oj-option id="title_opt4" value="saravanantest">saravanan test 4+guru</oj-option>
+        </oj-select-one>
+
+    </div>
+    <div class="oj-lg-6 oj-md-6 oj-sm-12 oj-flex-item">
+      <oj-paging-control id="paging" data="[[dataSource]]" page-size="5"></oj-paging-control>
+    </div>
+   </div>
+   <div class="oj-flex oj-flex-init">
+      <div class="oj-flex-item oj-md-4 oj-sm-12">
+         <h3>
+            <oj-label for="activitiesList">Inspections</oj-label>
+         </h3>
+         <oj-list-view id="activitiesList" style="width:100%;height:500px;overflow-x:hidden" data="[[dataSource]]"
+            selection-mode="single" selection="{{selectedActivity}}" on-selection-changed="[[selectedActivityChanged]]"
+            first-selected-item="{{firstSelectedActivity}}" >
+            <template slot="itemTemplate">
+               <div class="oj-flex" style="flex-wrap: nowrap">
+                  <!--span class="demo-thumbnail oj-flex-item" :style.background-image="[[' url('+$current.data.image+')']]"></span-->
+                  <div class="demo-content oj-flex-item">
+                     <div>
+                        <strong>
+                           <oj-bind-text value="[[$current.data.title]]"></oj-bind-text>
+                        </strong>
+                     </div>
+                     <!--span class="demo-metadata">
+                        <oj-bind-text value="[[$current.data.short_desc]]"></oj-bind-text>
+                        </span-->
+                  </div>
+               </div>
+            </template>
+         </oj-list-view>
+      </div>
+      <oj-bind-if test="[[activitySelected()]]">
+         <div class="oj-flex oj-flex-item oj-flex-items-pad oj-md-8 oj-sm-12">
+            <oj-bind-if test="[[activitySelected()]]">
+               <div class="oj-flex-item oj-sm-12 oj-md-12 contents">
+                  <h3>
+                     <oj-label for="basicSelect">Item Details</oj-label>
+                  </h3>
+                  <hr style="margin-top:12px;">
+                  <!--oj-avatar role="img" size="lg" :aria-label="[['product image for '+ itemData().name]]" :src="[[itemData().image]]"
+                     style="float:right;">
+                     </oj-avatar-->
+                  <!--div id="itemName" style="font-size: 20px; font-weight: bolder;">
+                     <oj-bind-text value="[[itemData().name]]"></oj-bind-text>
+                     </div>
+                     <div id="itemDesc" style="font-size: 14px; font-weight: 400; font-style:italic; margin-bottom: 10px;">
+                     <oj-bind-text value="[[itemData().short_desc]]"></oj-bind-text>
+                     </div>
+                     <div id="itemPrice">
+                     <oj-bind-text value="[['Price: ' + itemData().price + ' each']]"></oj-bind-text>
+                     </div>
+                     <div id="itemId">
+                     <oj-bind-text value="[['Item Id: ' + itemData().id]]"></oj-bind-text>
+                     </div>
+                     <div>
+                     <oj-chart  type="pie" series="[[pieSeriesValue]]" animation-on-display="auto"
+                               animation-on-data-change="auto" hover-behavior="dim"
+                               legend.position="bottom"
+                               style="max-width: 400px;width:100%;height:350px;">
+                     </oj-chart>
+                     </div-->
+                  <table>
+                     <tr style="height:; auto;">
+                        <td colspan="4">
+                           <div class="label-text"><span>Area</span></div>
+                           <div class="area-sub-text">
+                              <span>
+                                 <oj-bind-text value="[[SelectedItemArea]]"></oj-bind-text>
+                              </span>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr class="row container-fluid template-title-row">
+                        <td colspan="4">
+                           <div class="label-text"><span>Template</span></div>
+                           <div class="sub-text">
+                              <span>
+                                 <oj-bind-text value="[[itemData().template_title]]"></oj-bind-text>
+                              </span>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr class="row container-fluid">
+                        <td class="created col-md-4">
+                           <span class="label-text">Created</span>
+                           <div class="user-name sub-text">
+                              <oj-bind-text value="[[createdBy]]"></oj-bind-text>
+                           </div>
+                           <div class="time-ago sub-text">
+                              <oj-bind-text value="[[createdAt]]"></oj-bind-text>
+                           </div>
+                        </td>
+                        <td class="last-modified col-md-4">
+                           <span class="label-text">Last modified</span>
+                           <div class="user-name sub-text">
+                              <oj-bind-text value=""></oj-bind-text>
+                           </div>
+                           <div class="time-ago sub-text">
+                              <oj-bind-text value=""></oj-bind-text>
+                           </div>
+                        </td>
+                        <td class="progress-percentage col-md-2">
+                           <span class="label-text">
+                              Progress
+                              <div class="value sub-text"></div>
+                           </span>
+                        </td>
+                        <td class="checklist-status col-md-2">
+                           <span class="status-text details-item-title label-text">Status</span>
+                           <span class="icon">
+                              <oj-bind-text value=""></oj-bind-text>
+                           </span>
+                        </td>
+                     </tr>
+                  </table>
+               </div>
+            </oj-bind-if>
+         </div>
+      </oj-bind-if>
+      <oj-bind-if test="[[!activitySelected()]]">
+         <div class="oj-flex-item oj-sm-6">
+            <h4>Select an Inspection to see details</h4>
+         </div>
+      </oj-bind-if>
+   </div>
+</div>
