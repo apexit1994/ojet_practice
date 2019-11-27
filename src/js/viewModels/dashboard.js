@@ -90,7 +90,7 @@ define(
             model: model
       });
       var originalCollection = self.collection;
-      self.dataSource = ko.observable(new oj.PagingTableDataSource(new oj.CollectionTableDataSource(self.collection)));
+      // self.dataSource = ko.observable(new oj.PagingTableDataSource(new oj.CollectionTableDataSource(self.collection)));
       this.currentTitle = [];
         //defines link to local data file
 
